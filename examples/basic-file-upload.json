@@ -1,0 +1,140 @@
+[
+    {
+        "id": "pl-example-flow",
+        "type": "tab",
+        "label": "Process Link File Upload",
+        "disabled": false,
+        "info": "Example flow demonstrating how to upload files to Process Link Files API"
+    },
+    {
+        "id": "pl-inject",
+        "type": "inject",
+        "z": "pl-example-flow",
+        "name": "Trigger Upload",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "pl-file-in"
+            ]
+        ]
+    },
+    {
+        "id": "pl-file-in",
+        "type": "file in",
+        "z": "pl-example-flow",
+        "name": "Read File",
+        "filename": "/path/to/your/file.pdf",
+        "filenameType": "str",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": true,
+        "x": 310,
+        "y": 100,
+        "wires": [
+            [
+                "pl-upload"
+            ]
+        ]
+    },
+    {
+        "id": "pl-upload",
+        "type": "processlink-upload",
+        "z": "pl-example-flow",
+        "name": "Upload to Process Link",
+        "server": "",
+        "filename": "",
+        "timeout": "30000",
+        "apiUrl": "https://files.processlink.com.au/api/upload",
+        "x": 530,
+        "y": 100,
+        "wires": [
+            [
+                "pl-switch"
+            ]
+        ]
+    },
+    {
+        "id": "pl-switch",
+        "type": "switch",
+        "z": "pl-example-flow",
+        "name": "Check Status",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "201",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 730,
+        "y": 100,
+        "wires": [
+            [
+                "pl-debug-success"
+            ],
+            [
+                "pl-debug-error"
+            ]
+        ]
+    },
+    {
+        "id": "pl-debug-success",
+        "type": "debug",
+        "z": "pl-example-flow",
+        "name": "Upload Success",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "file_id",
+        "targetType": "msg",
+        "statusVal": "file_id",
+        "statusType": "msg",
+        "x": 940,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "pl-debug-error",
+        "type": "debug",
+        "z": "pl-example-flow",
+        "name": "Upload Error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload.error",
+        "statusType": "msg",
+        "x": 930,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "pl-comment",
+        "type": "comment",
+        "z": "pl-example-flow",
+        "name": "Instructions: Configure the 'Upload to Process Link' node with your Site ID and API Key",
+        "info": "1. Double-click the orange 'Upload to Process Link' node\n2. Click the pencil icon next to 'Config'\n3. Enter your Site ID and API Key from the Process Link Files app\n4. Update the 'Read File' node with the path to your file\n5. Click the inject button to upload",
+        "x": 330,
+        "y": 40,
+        "wires": []
+    }
+]

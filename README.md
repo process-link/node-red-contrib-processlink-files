@@ -1,6 +1,8 @@
 # @processlink/node-red-contrib-processlink-files
 
-Node-RED node to upload files to [Process Link Files](https://files.processlink.com.au) API.
+![Process Link](./images/logo.png)
+
+Node-RED node to upload files to Process Link Files API.
 
 ## Installation
 
