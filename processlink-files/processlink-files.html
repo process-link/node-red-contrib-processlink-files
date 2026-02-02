@@ -3,7 +3,7 @@
 <!-- ============================================ -->
 
 <script type="text/javascript">
-  RED.nodes.registerType("processlink-config", {
+  RED.nodes.registerType("processlink-files-config", {
     category: "config",
     defaults: {
       name: { value: "" },
@@ -18,7 +18,7 @@
   });
 </script>
 
-<script type="text/html" data-template-name="processlink-config">
+<script type="text/html" data-template-name="processlink-files-config">
   <div class="form-row">
     <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-config-input-name" placeholder="My Site Config" />
@@ -46,7 +46,7 @@
   </div>
 </script>
 
-<script type="text/html" data-help-name="processlink-config">
+<script type="text/html" data-help-name="processlink-files-config">
   <p>Configuration node for Process Link Files API authentication.</p>
 
   <h3>Properties</h3>
@@ -73,12 +73,12 @@
 <!-- ============================================ -->
 
 <script type="text/javascript">
-  RED.nodes.registerType("processlink-upload", {
+  RED.nodes.registerType("processlink-files-upload", {
     category: "Process Link",
     color: "#f97316",
     defaults: {
       name: { value: "" },
-      server: { value: "", type: "processlink-config", required: true },
+      server: { value: "", type: "processlink-files-config", required: true },
       filename: { value: "" },
       timeout: { value: "30000" },
       apiUrl: { value: "https://files.processlink.com.au/api/upload" },
@@ -98,7 +98,7 @@
   });
 </script>
 
-<script type="text/html" data-template-name="processlink-upload">
+<script type="text/html" data-template-name="processlink-files-upload">
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name" />
@@ -122,7 +122,7 @@
   </div>
 </script>
 
-<script type="text/html" data-help-name="processlink-upload">
+<script type="text/html" data-help-name="processlink-files-upload">
   <p>Uploads files to the Process Link Files API.</p>
 
   <h3>Inputs</h3>

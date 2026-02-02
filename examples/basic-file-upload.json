@@ -47,7 +47,7 @@
     },
     {
         "id": "pl-upload",
-        "type": "processlink-upload",
+        "type": "processlink-files-upload",
         "z": "pl-example-flow",
         "name": "Upload to Process Link",
         "server": "",

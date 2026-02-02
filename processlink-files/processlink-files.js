@@ -17,7 +17,7 @@ module.exports = function (RED) {
     // API key is stored in this.credentials.apiKey (encrypted by Node-RED)
   }
 
-  RED.nodes.registerType("processlink-config", ProcessLinkConfigNode, {
+  RED.nodes.registerType("processlink-files-config", ProcessLinkConfigNode, {
     credentials: {
       apiKey: { type: "password" },
     },
@@ -187,5 +187,5 @@ module.exports = function (RED) {
     });
   }
 
-  RED.nodes.registerType("processlink-upload", ProcessLinkUploadNode);
+  RED.nodes.registerType("processlink-files-upload", ProcessLinkUploadNode);
 };
