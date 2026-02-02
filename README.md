@@ -168,7 +168,7 @@ The API allows **30 uploads per minute** per site. If you exceed this limit, you
 ## Support
 
 - **Issues**: [GitHub Issues](https://github.com/process-link/node-red-contrib-processlink-files/issues)
-- **Process Link**: [files.processlink.com.au](https://files.processlink.com.au)
+- **Email**: support@processlink.com.au
 
 ## License
 
