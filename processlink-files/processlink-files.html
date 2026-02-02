@@ -86,13 +86,15 @@
     inputs: 1,
     outputs: 1,
     icon: "processlink.svg",
-    paletteLabel: "PL Upload",
+    paletteLabel: "files upload",
     label: function () {
-      return this.name || "Process Link Upload";
+      return this.name || "files upload";
     },
     labelStyle: function () {
       return this.name ? "node_label_italic" : "";
     },
+    inputLabels: "file buffer",
+    outputLabels: "response",
   });
 </script>
 
