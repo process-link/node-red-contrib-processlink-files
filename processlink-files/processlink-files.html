@@ -1,0 +1,185 @@
+<!-- ============================================ -->
+<!-- Config Node - Process Link Configuration    -->
+<!-- ============================================ -->
+
+<script type="text/javascript">
+  RED.nodes.registerType("processlink-config", {
+    category: "config",
+    defaults: {
+      name: { value: "" },
+      siteId: { value: "", required: true },
+    },
+    credentials: {
+      apiKey: { type: "password" },
+    },
+    label: function () {
+      return this.name || "Process Link Config";
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="processlink-config">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" placeholder="My Site Config" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-siteId"><i class="fa fa-building"></i> Site ID</label>
+    <input
+      type="text"
+      id="node-config-input-siteId"
+      placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-apiKey"><i class="fa fa-key"></i> API Key</label>
+    <input type="password" id="node-config-input-apiKey" placeholder="Your API key" />
+  </div>
+  <div class="form-tips">
+    <p>
+      Get your Site ID and API Key from the
+      <a href="https://files.processlink.com.au" target="_blank">Process Link Files</a> app.
+    </p>
+    <p>
+      Go to <strong>Settings → API Keys</strong> to generate a new key.
+    </p>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="processlink-config">
+  <p>Configuration node for Process Link Files API authentication.</p>
+
+  <h3>Properties</h3>
+  <dl class="message-properties">
+    <dt>Name <span class="property-type">string</span></dt>
+    <dd>Optional friendly name for this configuration.</dd>
+    <dt>Site ID <span class="property-type">string</span></dt>
+    <dd>The UUID of your site from Process Link. Found in your site settings.</dd>
+    <dt>API Key <span class="property-type">string</span></dt>
+    <dd>
+      The API key for authentication. Generate one from Settings → API Keys in the Files app.
+    </dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This configuration is shared across all Process Link nodes in your flow. The API key is stored
+    encrypted by Node-RED.
+  </p>
+</script>
+
+<!-- ============================================ -->
+<!-- Upload Node - Upload files to Process Link  -->
+<!-- ============================================ -->
+
+<script type="text/javascript">
+  RED.nodes.registerType("processlink-upload", {
+    category: "Process Link",
+    color: "#3b82f6",
+    defaults: {
+      name: { value: "" },
+      server: { value: "", type: "processlink-config", required: true },
+      filename: { value: "" },
+      timeout: { value: "30000" },
+      apiUrl: { value: "https://files.processlink.com.au/api/upload" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "processlink.svg",
+    paletteLabel: "PL Upload",
+    label: function () {
+      return this.name || "Process Link Upload";
+    },
+    labelStyle: function () {
+      return this.name ? "node_label_italic" : "";
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="processlink-upload">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-server"><i class="fa fa-server"></i> Config</label>
+    <input type="text" id="node-input-server" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-filename"><i class="fa fa-file"></i> Filename</label>
+    <input type="text" id="node-input-filename" placeholder="msg.filename (or specify default)" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-timeout"><i class="fa fa-clock-o"></i> Timeout</label>
+    <input type="text" id="node-input-timeout" placeholder="30000" />
+    <span style="margin-left: 5px; color: #888">ms</span>
+  </div>
+  <div class="form-row" style="display: none">
+    <label for="node-input-apiUrl"><i class="fa fa-link"></i> API URL</label>
+    <input type="text" id="node-input-apiUrl" />
+  </div>
+</script>
+
+<script type="text/html" data-help-name="processlink-upload">
+  <p>Uploads files to the Process Link Files API.</p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">buffer | string</span></dt>
+    <dd>The file content to upload.</dd>
+    <dt class="optional">filename <span class="property-type">string</span></dt>
+    <dd>The filename to use. Defaults to the configured filename or "file.bin".</dd>
+  </dl>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+    <dt>payload <span class="property-type">object</span></dt>
+    <dd>The API response containing <code>ok</code>, <code>file_id</code>, and <code>created_at</code>.</dd>
+    <dt>file_id <span class="property-type">string</span></dt>
+    <dd>The UUID of the uploaded file (convenience property).</dd>
+    <dt>statusCode <span class="property-type">number</span></dt>
+    <dd>The HTTP status code (201 on success).</dd>
+  </dl>
+
+  <h3>Details</h3>
+  <p>
+    This node uploads files to your Process Link site. The file content should be passed in
+    <code>msg.payload</code> as a Buffer (from a file-in node) or as a string.
+  </p>
+  <p>
+    The filename can be set in <code>msg.filename</code> or configured in the node properties. If
+    the filename contains a path, only the basename will be used.
+  </p>
+
+  <h3>Status Codes</h3>
+  <ul>
+    <li><strong>201</strong> - Upload successful</li>
+    <li><strong>400</strong> - Bad request (missing file, invalid site ID)</li>
+    <li><strong>401</strong> - Invalid API key</li>
+    <li><strong>403</strong> - API access not enabled for this site</li>
+    <li><strong>404</strong> - Site not found</li>
+    <li><strong>429</strong> - Rate limit exceeded (max 30 uploads/minute)</li>
+    <li><strong>507</strong> - Storage limit exceeded</li>
+  </ul>
+
+  <h3>Example Flow</h3>
+  <pre>
+[File In] → [Process Link Upload] → [Debug]
+
+The File In node reads a file and outputs msg.payload (Buffer)
+and msg.filename. Connect directly to this node to upload.</pre>
+
+  <h3>References</h3>
+  <ul>
+    <li>
+      <a href="https://files.processlink.com.au" target="_blank">Process Link Files</a> - Manage
+      your files and API keys
+    </li>
+    <li>
+      <a href="https://github.com/process-link/node-red-contrib-processlink-files" target="_blank"
+        >GitHub</a
+      >
+      - Source code and issues
+    </li>
+  </ul>
+</script>
