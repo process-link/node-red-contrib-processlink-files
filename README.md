@@ -1,4 +1,4 @@
-# node-red-contrib-processlink-files
+# @processlink/node-red-contrib-processlink-files
 
 Node-RED node to upload files to [Process Link Files](https://files.processlink.com.au) API.
 
@@ -8,14 +8,14 @@ Node-RED node to upload files to [Process Link Files](https://files.processlink.
 
 1. Open Node-RED
 2. Go to **Menu → Manage palette → Install**
-3. Search for `node-red-contrib-processlink-files`
+3. Search for `@processlink/node-red-contrib-processlink-files`
 4. Click **Install**
 
 ### Via npm
 
 ```bash
 cd ~/.node-red
-npm install node-red-contrib-processlink-files
+npm install @processlink/node-red-contrib-processlink-files
 ```
 
 Then restart Node-RED.
